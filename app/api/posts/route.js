@@ -21,7 +21,7 @@ if (!sessionUser || !sessionUser.user.id) {
      user: { name, email, image, id, username, avatar },
      userId,
    } = sessionUser;
-
+// console.log("User:", sessionUser)
 
      const content = formData.get("postContent")
     const images = formData.getAll("images").filter((image) => image.name !== ""); //prevent error cloudinary 
@@ -109,12 +109,14 @@ export const GET = async (request) => {
       .sort({ createdAt: -1 })
       .lean();
 
+      
+
     // Fetch comments and populate user info for each comment
     for (const post of posts) {
       const pc = post.comments = await Comment.find({ postId: post._id })
         .populate("userId", "avatar") // Populate user data in comments
         .lean();
-        //  console.log("Postscomments:", pc);
+        // console.log("Posts:", posts);
     }
 
      return new Response(JSON.stringify(posts), { status: 200 });

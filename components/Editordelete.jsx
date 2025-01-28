@@ -3,14 +3,12 @@ import { useState } from "react";
 import Image from "next/image";
 import edit from "../assets/icons/edit.png";
 import deleteIcon from "../assets/icons/delete.png";
-import { useRouter } from "next/navigation";
 import EditPostForm from "./EditPostForm";
 import { mutate } from "swr";
 
 const Editordelete = ({ showOptions, setShowOptions, postId, post }) => {
-  const [showEditForm, setShowEditForm] = useState(false);
 
-  const router = useRouter();
+  const [showEditForm, setShowEditForm] = useState(false);
 
   const showEditPostModal = async () => {
     setShowEditForm(true);

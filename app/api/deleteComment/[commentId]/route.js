@@ -11,10 +11,12 @@ export const DELETE = async (request, { params }) => {
 
     const sessionUser = await getSessionUser();
 
-    if (!sessionUser || !sessionUser.user?.id ) {
+    if (!sessionUser || !sessionUser.user?.id) {
       return new Response(
-        JSON.stringify({ message: "You are not authorized to delete a comment!" }),
-        { status: 401 }
+        JSON.stringify({
+          message: "You are not authorized to delete a comment!",
+        }),
+        { status: 401 },
       );
     }
 
@@ -22,11 +24,11 @@ export const DELETE = async (request, { params }) => {
     await Comment.findOneAndDelete({ _id: commentId });
 
     // delete comment likes
-    await Like.deleteMany({ postId: commentId });
-    
+    const deletedLikes = await Like.deleteMany({ postId: commentId });
+    console.log("Deleted:", deletedLikes);
     return new Response(
       JSON.stringify({ message: "Comment deleted successfully!" }),
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.log(error);
