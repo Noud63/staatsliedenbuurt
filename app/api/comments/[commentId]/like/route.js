@@ -5,7 +5,6 @@ import { getSessionUser } from "@/utils/getSessionUser";
 
 export const POST = async (request, { params }) => {
   
-
   const { commentId } = params;
   const session = await getSessionUser();
 
@@ -19,20 +18,29 @@ export const POST = async (request, { params }) => {
 
   const userId = session.user.id;
 
+  // Add or remove like from database and update the likesCount in the comment
   try {
-    // await connectDB();
+    await connectDB();
     const liked = await Like.findOne({ postId, userId });
     if (liked) {
       const deletedLike = await Like.findOneAndDelete({ postId, userId });
       if (deletedLike) {
-        await Comment.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
+       const com = await Comment.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
+       return new Response(
+         JSON.stringify({ message: "dec", likes: com.likesCount - 1 }),
+         { status: 200 },
+       );
       }
-      return new Response(JSON.stringify({ message: "dec" }), { status: 200 });
+      
     } else {
       const like = await Like.create({ userId, postId });
-      await Comment.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
-      return new Response(JSON.stringify({ message: "inc" }), { status: 200 });
+     const com =  await Comment.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
+      return new Response(
+        JSON.stringify({ message: "inc", likes: com.likesCount + 1 }),
+        { status: 200 },
+      );
     }
+
   } catch (error) {
     return new Response({ message: error.message }, { status: 500 });
   }

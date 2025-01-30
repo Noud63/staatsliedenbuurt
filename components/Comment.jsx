@@ -5,38 +5,52 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import React from "react";
 import { mutate } from "swr";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Comment = ({ com }) => {
   
   const { data: session } = useSession();
 
-  // const [likesCount, setLikesCount] = useState(com.likesCount);
-
-  const router = useRouter();
-
   const toggleLike = async (commentId) => {
-    try {
-      const res = await fetch(`/api/comments/${commentId}/like`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ commentId }),
-      });
+    // Optimistically update the UI
+    mutate(
+      `/api/posts`,
+      async (currentData) => {
+        // Find the post that contains the comment
+        const updatedPosts = currentData.map((post) => {
+          return {
+            ...post,
+            comments: post.comments.map((comment) => {
+              if (comment._id === commentId) {
+                console.log(comment)
+                return {
+                  ...comment,
+                  likesCount:
+                    comment.likesCount + (comment.likedByUser ? -1 : 1), // if likedbyuser is true -> comment.likesCount - 1 else comment.likesCount + 1
+                  likedByUser: !comment.likedByUser, // Toggle like state true/false
+                };
+              }
+              return comment;
+            }),
+          };
+        });
 
-      const data = await res.json();
+        try {
+          const res = await fetch(`/api/comments/${commentId}/like`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ commentId }),
+          });
 
-      //Optimistic update
-      // if (data.message === "inc") {
-      //   setLikesCount((prevCount) => prevCount + 1);
-      // } else {
-      //   setLikesCount((prevCount) => prevCount - 1);
-      // }
-      
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    }
-    mutate(`/api/posts`);
+          if (!res.ok) throw new Error("Failed to update like");
+        } catch (error) {
+          console.error(error);
+           mutate(`/api/posts`);
+          return currentData; // Rollback on failure
+        }
+
+        return updatedPosts; // Return updated UI state
+      },false); // `false` means it won't revalidate immediately
   };
 
   const deleteComment = async (commentId) => {
@@ -97,11 +111,22 @@ const Comment = ({ com }) => {
             )}
             <button
               type="button"
-              className="flex w-[80px] cursor-pointer justify-center rounded-full border border-gray-500 text-[14px] font-semibold text-gray-600"
+              className="flex w-[60px] cursor-pointer items-center justify-center gap-3 rounded-full border border-gray-400 text-[14px] font-semibold text-gray-600"
               onClick={() => toggleLike(com._id)}
               disabled={!session}
             >
-              Leuk {com.likesCount}
+              {com.likedByUser ? (
+                <div className="flex items-center gap-2">
+                  <FaHeart color="#ca8a04" size={17} />
+                  {/* <span>leuk</span> */}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <FaRegHeart size={17} color="#ca8a04" />
+                  {/* <span>leuk</span> */}
+                </div>
+              )}{" "}
+              {com.likesCount}
             </button>
           </div>
         </div>

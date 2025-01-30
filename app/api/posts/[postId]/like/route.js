@@ -5,7 +5,6 @@ import { getSessionUser } from "@/utils/getSessionUser";
 
 export const POST = async (request, { params }) => {
  
-
   const { postId } = params;
   const session = await getSessionUser()
 
@@ -21,12 +20,12 @@ export const POST = async (request, { params }) => {
        if (liked) {
          // If already liked, remove the like
          await Like.findOneAndDelete({ postId, userId });
-         await Post.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
+         const post = await Post.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
          return new Response(JSON.stringify({ message: "dec" }), { status: 200});
        } else {
          // If not liked, create a new like
          await Like.create({ userId, postId });
-         await Post.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
+         const post = await Post.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
          return new Response(
            JSON.stringify({ message: "inc" }), { status: 200 });
        }

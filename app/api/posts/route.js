@@ -2,7 +2,9 @@ import connectDB from "@/connectDB/database";
 import cloudinary from "@/config/cloudinary";
 import Post from "@/models/post"
 import Comment from "@/models/comment";
+import Like from "@/models/like";
 import { getSessionUser } from "@/utils/getSessionUser";
+
 
 export const POST = async (request) => {
 
@@ -24,7 +26,7 @@ if (!sessionUser || !sessionUser.user.id) {
 // console.log("User:", sessionUser)
 
      const content = formData.get("postContent")
-    const images = formData.getAll("images").filter((image) => image.name !== ""); //prevent error cloudinary 
+     const images = formData.getAll("images").filter((image) => image.name !== ""); //prevent error cloudinary 
 
 
     const postData = {
@@ -65,7 +67,7 @@ if (!sessionUser || !sessionUser.user.id) {
       const newPost = new Post(postData);
       await newPost.save();
 
-      console.log(newPost)
+      // console.log(newPost)
 
     return new Response(JSON.stringify(newPost, {status:200}));
 
@@ -78,30 +80,10 @@ if (!sessionUser || !sessionUser.user.id) {
 
 export const GET = async (request) => {
 
+const sessionUser = await getSessionUser();
+
   try {
     await connectDB();
-
-    // const posts = await Post.aggregate([
-    //   {
-    //     $lookup: {
-    //       from: "comments", // The collection to join
-    //       localField: "_id", // Field from the posts collection
-    //       foreignField: "postId", // Field from the comments collection
-    //       as: "comments", // Output array field
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: "likes", // Collection name for likes
-    //       localField: "_id", // Field in posts collection
-    //       foreignField: "postId", // Field in likes collection
-    //       as: "likes", // Output field for likes
-    //     },
-    //   },
-    //   {
-    //     $sort: { createdAt: -1 }, // Optional: Sort posts by creation date
-    //   },
-    // ]);
 
     // Fetch posts and populate user info for each post (user's profile picture and username)
     const posts = await Post.find({})
@@ -109,19 +91,34 @@ export const GET = async (request) => {
       .sort({ createdAt: -1 })
       .lean();
 
-      
-
-    // Fetch comments and populate user info for each comment
+      // Fetch comments and populate user info for each comment
     for (const post of posts) {
-      const pc = post.comments = await Comment.find({ postId: post._id })
+      const pc = (post.comments = await Comment.find({ postId: post._id })
         .populate("userId", "avatar") // Populate user data in comments
-        .lean();
-        // console.log("Posts:", posts);
+        .lean());
+
+        const liked = await Like.findOne({    // If there is a liked post, it will return true
+          postId: post._id,
+          userId: sessionUser?.user?.id,
+        });
+        post.likedByUser = !!liked;
+
+        // Fetch likes for each comment
+      for (const comment of post.comments) {
+        const liked = await Like.findOne({    // If there is a liked comment, it will return true
+          postId: comment._id,
+          userId: sessionUser?.user?.id,
+        });
+        comment.likedByUser = !!liked; // Add `likedByUser` boolean. Double exclamation mark is true in this case. !!{} -> true
+      }
+      // console.log("Posts:", JSON.stringify(posts[0], null, 2));
     }
+    
 
      return new Response(JSON.stringify(posts), { status: 200 });
   } catch (error) {
     console.log(error)
+    return new Response("Failed to get posts", { status: 500 });
   }
 }
     

@@ -1,59 +1,69 @@
 "use client";
-import React, {useState} from "react";
+import React from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
- import { mutate } from "swr";
+import { mutate } from "swr";
 
-const LikeButton = ({ postId , post }) => {
-
-  const { data: session} = useSession()
-
-  const [likesCount, setLikesCount] = useState(post.likesCount);
-
-  const router = useRouter()
+const LikeButton = ({ postId, post }) => {
+  const { data: session } = useSession();
 
   const toggleLike = async () => {
-    try {
+    // Optimistically update the UI
+    mutate(
+      `/api/posts`,
+      async (currentData) => {
+        // Find the post that contains the comment
+        const updatedPosts = currentData.map((p) => {
 
-      const res = await fetch(`/api/posts/${postId}/like`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({postId})
-      });
+          if (p._id === postId) {
+            return {
+              ...p,
+              likesCount: p.likesCount + (p.likedByUser ? -1 : 1), // if likedbyuser is true -> comment.likesCount - 1 else comment.likesCount + 1
+              likedByUser: !p.likedByUser, // Toggle like state true/false
+            };
+          }
+          return p
+        });
 
-      const data = await res.json()
+        try {
+          const res = await fetch(`/api/posts/${postId}/like`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ postId }),
+          });
 
-      if (data.message === "inc") {
-        setLikesCount((prevCount) => prevCount + 1);
-      } else {
-        setLikesCount((prevCount) => prevCount - 1);
-      }
+          const data = await res.json();
 
-    } catch (error) {
-      console.error('Error toggling like:', error);
-    }
-  mutate(`/api/posts`);
+          if (!res.ok) throw new Error("Failed to update like");
+        } catch (error) {
+          console.error("Error toggling like:", error);
+          mutate(`/api/posts`); // Re-fetch fresh data if an error occurs
+          return currentData;
+        }
+
+        return updatedPosts; // Return updated UI state
+      },
+      false,
+    ); // `false` means it won't revalidate immediately
   };
 
-return (
-  <div className="flex">
-    <button type="button" disabled={!session}>
-      <FaThumbsUp
-        color="gray"
-        size={20}
-        disabled={!session?.user ? true : false}
-        className="mr-2 cursor-pointer"
-        onClick={toggleLike}
-      />
-    </button>
-    <div className="flex h-[28px] w-[28px] items-center justify-center rounded-full bg-red-800 text-sm font-semibold text-white">
-      {likesCount}
+  return (
+    <div className="flex items-center justify-center">
+      <button type="button" disabled={!session} onClick={toggleLike}>
+        <FaThumbsUp
+          color="gray"
+          size={20}
+          disabled={!session?.user ? true : false}
+          className="mr-2 cursor-pointer"
+        />
+      </button>
+      <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-green-600 text-sm font-semibold text-white">
+        {post.likesCount}
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default LikeButton;
