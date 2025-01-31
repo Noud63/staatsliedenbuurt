@@ -21,7 +21,7 @@ const Comment = ({ com, postId }) => {
           return {
             ...post,
             comments: post.comments.map((comment) => {
-              if (comment._id === commentId) { 
+              if (comment._id === commentId) {
                 return {
                   ...comment,
                   likesCount:
@@ -44,12 +44,14 @@ const Comment = ({ com, postId }) => {
           if (!res.ok) throw new Error("Failed to update like");
         } catch (error) {
           console.error(error);
-           mutate(`/api/posts`);
           return currentData; // Rollback on failure
         }
 
         return updatedPosts; // Return updated UI state
-      },false); // `false` means it won't revalidate immediately
+      },
+      false,
+    ); // `false` means it won't revalidate immediately
+
   };
 
   const deleteComment = async (commentId) => {
@@ -138,12 +140,10 @@ const Comment = ({ com, postId }) => {
               {com.likedByUser ? (
                 <div className="flex items-center gap-2">
                   <FaHeart color="#ca8a04" size={17} />
-                  {/* <span>leuk</span> */}
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <FaRegHeart size={17} color="#ca8a04" />
-                  {/* <span>leuk</span> */}
                 </div>
               )}{" "}
               {com.likesCount}

@@ -14,7 +14,6 @@ const LikeButton = ({ postId, post }) => {
       async (currentData) => {
         // Find the post that contains the comment
         const updatedPosts = currentData.map((p) => {
-
           if (p._id === postId) {
             return {
               ...p,
@@ -22,7 +21,7 @@ const LikeButton = ({ postId, post }) => {
               likedByUser: !p.likedByUser, // Toggle like state true/false
             };
           }
-          return p
+          return p;
         });
 
         try {
@@ -39,7 +38,6 @@ const LikeButton = ({ postId, post }) => {
           if (!res.ok) throw new Error("Failed to update like");
         } catch (error) {
           console.error("Error toggling like:", error);
-          mutate(`/api/posts`); // Re-fetch fresh data if an error occurs
           return currentData;
         }
 

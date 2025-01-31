@@ -8,6 +8,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { mutate } from "swr";
 
 const Editordelete = ({ showOptions, setShowOptions, postId, post }) => {
+
   const [showEditForm, setShowEditForm] = useState(false);
 
   const showEditPostModal = () => {
@@ -43,6 +44,7 @@ const Editordelete = ({ showOptions, setShowOptions, postId, post }) => {
       },
       false,
     ); // `false` means it won't revalidate immediately
+    
   };
 
   return (
