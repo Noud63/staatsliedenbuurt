@@ -4,35 +4,46 @@ import Image from "next/image";
 import edit from "../assets/icons/edit.png";
 import deleteIcon from "../assets/icons/delete.png";
 import EditPostForm from "./EditPostForm";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import { mutate } from "swr";
 
 const Editordelete = ({ showOptions, setShowOptions, postId, post }) => {
-
   const [showEditForm, setShowEditForm] = useState(false);
 
-  const showEditPostModal = async () => {
+  const showEditPostModal = () => {
     setShowEditForm(true);
     setShowOptions(false);
   };
 
   const deletePost = async () => {
-    try {
-      const res = await fetch(`/api/deletepost/${postId}`, {
-        method: "DELETE",
-      });
+    mutate(
+      `/api/posts`,
+      async (currentData) => {
+        // Find the post that contains the comment
+        const updatedPosts = currentData.filter((post) => {
+          return post._id !== postId;
+        });
 
-      const data = await res.json();
+        try {
+          const res = await fetch(`/api/deletepost/${postId}`, {
+            method: "DELETE",
+          });
 
-      if (res.ok) {
-        console.log(data.message);
-      }
-    } catch (error) {
-      console.log(data.message);
-    }
-    setShowOptions(false);
-    mutate('/api/posts');
+          const data = await res.json();
+
+          if (res.ok) {
+            console.log(data.message);
+            setShowOptions(false);
+          }
+        } catch (error) {
+          console.log(data.message);
+          return currentData; // Rollback on failure
+        }
+        return updatedPosts; // Return updated UI state
+      },
+      false,
+    ); // `false` means it won't revalidate immediately
   };
-
 
   return (
     <>
@@ -55,7 +66,7 @@ const Editordelete = ({ showOptions, setShowOptions, postId, post }) => {
             <span>Bewerk</span>
           </div>
           <div
-            className="flex w-full cursor-pointer flex-row"
+            className="flex w-full cursor-pointer flex-row border-b border-gray-400 pb-2"
             onClick={deletePost}
           >
             <Image
@@ -66,6 +77,11 @@ const Editordelete = ({ showOptions, setShowOptions, postId, post }) => {
               className="h-[32px] w-[32px] cursor-pointer p-2"
             />
             <span>Verwijder</span>
+          </div>
+          <div className="mt-4 flex w-full justify-center">
+            <button type="button" onClick={() => setShowOptions(false)}>
+              <AiOutlineCloseCircle size={24} color="#000" />
+            </button>
           </div>
         </div>
       )}

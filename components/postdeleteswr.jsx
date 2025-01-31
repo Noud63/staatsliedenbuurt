@@ -8,39 +8,37 @@
 // const LikeButton = ({ postId, post }) => {
 //   const { data: session } = useSession();
 
-// const toggleLike = async() => {
+// const deleteComment = async(commentId) => {
 //   // Optimistically update the UI
 //   mutate(
 //     `/api/posts`,
 //     async (currentData) => {
 //       // Find the post that contains the comment
-//       const updatedPosts = currentData.map((post) => {
-//         if (post._id === postId) {
-//         return {
-//           ...post,
-//           likesCount: {
-//                 ...post,
-//                 likesCount: post.likesCount + (post.likedByUser ? -1 : 1), // if likedbyuser is true -> comment.likesCount - 1 else comment.likesCount + 1
-//                 likedByUser: !post.likedByUser, // Toggle like state true/false
-//               }
-//             }
+//        const updatedPosts = currentData.map((post) => {
+//         if(post._id === postId) {
+//          return {
+//            ...post,
+//            comments: post.comments.filter((comment) => {
+//                 return comment._id !== commentId;
+//            })
 //          };
-//       });
+//         }
+//        });
 
-//        try {
-//          const res = await fetch(`/api/posts/${postId}/like`, {
-//            method: "POST",
-//            headers: {
-//              "Content-Type": "application/json",
-//            },
-//            body: JSON.stringify({ postId }),
-//          });
+//         try {
+//           const res = await fetch(`/api/deleteComment/${commentId}`, {
+//             method: "DELETE",
+//           });
 
-//          const data = await res.json();
-//        } catch (error) {
-//          console.error("Error toggling like:", error);
-//          return post
-//        }
+//           const data = await res.json();
+
+//           if (res.ok) {
+//             console.log(data.message);
+//           }
+//         } catch (error) {
+//           console.log(data.message);
+//           return currentData
+//         }
 
 //       return updatedPosts; // Return updated UI state
 //     },

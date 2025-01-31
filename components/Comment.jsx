@@ -7,7 +7,7 @@ import React from "react";
 import { mutate } from "swr";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-const Comment = ({ com }) => {
+const Comment = ({ com, postId }) => {
   
   const { data: session } = useSession();
 
@@ -53,21 +53,42 @@ const Comment = ({ com }) => {
   };
 
   const deleteComment = async (commentId) => {
-    try {
-      const res = await fetch(`/api/deleteComment/${commentId}`, {
-        method: "DELETE",
-      });
+    // Optimistically update the UI
+    mutate(
+      `/api/posts`,
+      async (currentData) => {
+        // Find the post that contains the comment
+        const updatedPosts = currentData.map((post) => {
+          if (post._id === postId) {
+            return {
+              ...post,
+              comments: post.comments.filter((comment) => {
+                return comment._id !== commentId;
+              }),
+            };
+          }
+          return post;
+        });
 
-      const data = await res.json();
+        try {
+          const res = await fetch(`/api/deleteComment/${commentId}`, {
+            method: "DELETE",
+          });
 
-      if (res.ok) {
-        console.log(data.message);
-      }
-    } catch (error) {
-      console.log(data.message);
-    }
+          const data = await res.json();
 
-    mutate(`/api/posts`);
+          if (res.ok) {
+            console.log(data.message);
+          }
+        } catch (error) {
+          console.log(data.message);
+          return currentData;
+        }
+
+        return updatedPosts; // Return updated UI state
+      },
+      false,
+    ); // `false` means it won't revalidate immediately
   };
 
   return (

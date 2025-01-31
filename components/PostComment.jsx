@@ -21,7 +21,7 @@ const PostComment = ({ post, comments }) => {
           Reacties:
         </div>
         {sortedComments.map((com, index) => (
-          <Comment key={index} com={com} />
+          <Comment key={index} com={com} postId={post._id}/>
         ))}
       </div>
 
