@@ -79,7 +79,7 @@ export const GET = async (request) => {
   const sessionUser = await getSessionUser();
 
   try {
-    // await connectDB();
+    await connectDB();
 
     // Fetch posts and populate user info for each post (user's profile picture and username)
     const posts = await Post.find({})
