@@ -45,7 +45,7 @@ const LikeButton = ({ postId, post }) => {
       },
       false,
     ); // `false` means it won't revalidate immediately
-
+    mutate(`/api/posts`); // Revalidate immediately
   };
 
   return (
