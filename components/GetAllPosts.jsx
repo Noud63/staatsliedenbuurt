@@ -3,7 +3,7 @@ import SinglePost from "./SinglePost";
 import Spinner from "./Spinner";
 import useSWR from "swr";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -23,7 +23,7 @@ const GetAllPosts = () => {
         className="h-[145px] w-[145px]"
       />
       <span>failed to load data!</span>
-      <span>Refresh page!</span>
+      <span>Refresh the page!</span>
     </div>
   );
   if (isLoading) return (

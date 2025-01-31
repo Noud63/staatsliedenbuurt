@@ -21,8 +21,7 @@ const Comment = ({ com }) => {
           return {
             ...post,
             comments: post.comments.map((comment) => {
-              if (comment._id === commentId) {
-                console.log(comment)
+              if (comment._id === commentId) { 
                 return {
                   ...comment,
                   likesCount:
