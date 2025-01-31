@@ -45,6 +45,7 @@ const LikeButton = ({ postId, post }) => {
       },
       false,
     ); // `false` means it won't revalidate immediately
+
   };
 
   return (

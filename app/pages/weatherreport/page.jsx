@@ -38,6 +38,8 @@ const WeatherreportPage = () => {
   let date = new Date();
   date.setDate(date.getDate(date) + 1);
 
+  // console.log(date.toLocaleDateString("nl-NL", { month: "short" }));
+
   return (
     <div className="mx-auto mt-8 w-full text-white md:max-w-[650px]">
       <div className="mx-4 bg-[url('../public/images/cloud2.png')] bg-cover bg-center bg-no-repeat max-md:mx-6 max-sm:mx-4 max-xsm:mx-2">
@@ -59,7 +61,7 @@ const WeatherreportPage = () => {
           </span>
         </div>
 
-        <WeerMorgen data2={d2} sunMoon={sunMoon} day={date} />
+        <WeerMorgen data2={d2} sunMoon={sunMoon} tomorrow={date} />
       </div>
       <div className="mt-8 flex justify-center text-xs">
         (Data provided by OpenWeathermap.org & SunriseSunset.io)

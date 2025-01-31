@@ -2,30 +2,29 @@ import React,{useEffect, useState} from 'react'
 import Image from 'next/image';
 import convertSunsetAndSunrise from '@/utils/convertSunsetAndSunrise';
 
-const WeerMorgen = ({data2, sunMoon, day}) => {
+const WeerMorgen = ({data2, sunMoon, tomorrow }) => {
 
-  console.log(sunMoon)
-  
-  const now = new Date();
+const now = new Date();
   const options = {
     month: "short",
     day: "numeric",
   };
-  const date = now.toLocaleDateString("nl-NL", options).split(" ");
-  const monthShort = date[1][0].toUpperCase() + date[1].slice(1);
+  const month = now.toLocaleDateString("nl-NL", { month: "short"});
+
+  const nextDay = tomorrow.toLocaleDateString("nl-NL").split("-")[0];
+  const nextMonth = tomorrow.toLocaleDateString("nl-NL", { month: "short" }); 
 
   const [data, setData] = useState({});
 
   useEffect(() => {
     if (sunMoon.length > 0) {
       let sunrise = convertSunsetAndSunrise(sunMoon[1].sunrise);
-       let sunset = convertSunsetAndSunrise(sunMoon[1].sunset)
-      
+      let sunset = convertSunsetAndSunrise(sunMoon[1].sunset);
+
       const dataObj = { ...data, sunrise, sunset };
       setData(dataObj);
     }
   }, [sunMoon]);
-
 
   return (
     <div className="mt-4 rounded-lg border-2 p-2 font-semibold">
@@ -113,10 +112,10 @@ const WeerMorgen = ({data2, sunMoon, day}) => {
 
         <div className="flex h-[135px] w-1/5 flex-col items-center justify-between">
           <span className="flex justify-center text-lg text-white">
-            {monthShort}
+            {Number(nextDay) === 1 ? nextMonth : month}
           </span>
           <span className="flex justify-center pb-2 text-6xl text-[#ffcb3b] drop-shadow-[0_2px_4px_rgba(113,63,18,.5)]">
-            {day.toLocaleDateString("nl-NL").slice(0, 2)}
+            {nextDay}
           </span>
           <span className="text-white-800 flex justify-center">
             {data2?.date && data2.date.slice(0, 4)}
