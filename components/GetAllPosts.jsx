@@ -3,7 +3,6 @@ import SinglePost from "./SinglePost";
 import Spinner from "./Spinner";
 import useSWR from "swr";
 import Image from "next/image";
-import { mutate } from "swr";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -24,7 +23,6 @@ const GetAllPosts = () => {
       />
       <span>failed to load data!</span>
       <span>Refresh the page!</span>
-      {mutate("/api/posts")}
     </div>
   );
   if (isLoading) return (
