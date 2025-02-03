@@ -52,7 +52,7 @@ const Comment = ({ com, postId }) => {
       },
       false,
     ); // `false` means it won't revalidate immediately
-  
+  mutate("/api/posts");
   };
 
   const deleteComment = async (commentId) => {

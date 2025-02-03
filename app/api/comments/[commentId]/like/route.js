@@ -27,7 +27,7 @@ export const POST = async (request, { params }) => {
       if (deletedLike) {
        const com = await Comment.findByIdAndUpdate(postId, { $inc: { likesCount: -1 } });
        return new Response(
-         JSON.stringify({ message: "dec", likes: com.likesCount - 1 }),
+         JSON.stringify({ message: "Like deleted"}),
          { status: 200 },
        );
       }
@@ -36,7 +36,7 @@ export const POST = async (request, { params }) => {
       const like = await Like.create({ userId, postId });
      const com =  await Comment.findByIdAndUpdate(postId, { $inc: { likesCount: 1 } });
       return new Response(
-        JSON.stringify({ message: "inc", likes: com.likesCount + 1 }),
+        JSON.stringify({ message: "Like added"}),
         { status: 200 },
       );
     }
