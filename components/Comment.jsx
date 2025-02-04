@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -10,6 +10,10 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 const Comment = ({ com, postId }) => {
   
   const { data: session } = useSession();
+
+  useEffect(() => {
+  mutate("/api/posts");  // Force refresh of comments when app is opened
+}, []);
 
   const toggleLike = async (commentId) => {
     // Optimistically update the UI
