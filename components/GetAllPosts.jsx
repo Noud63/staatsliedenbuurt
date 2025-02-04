@@ -7,11 +7,7 @@ import Image from "next/image";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const GetAllPosts = () => {
-  const { data, error, isLoading } = useSWR("/api/posts", fetcher, {
-    revalidateOnFocus: true, // Re-fetch when user switches back to the app
-    // revalidateIfStale: true, // Prevent stale data issues
-    revalidateOnReconnect: true, //Refetch when the internet reconnects
-  });
+  const { data, error, isLoading } = useSWR("/api/posts", fetcher);
 
   if (error)
     return (
