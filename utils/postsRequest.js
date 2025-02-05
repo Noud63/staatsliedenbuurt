@@ -2,25 +2,25 @@
 
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
-// async function fetchPosts() {
-// try {
-//    if (!apiDomain) {
-//      return [];
-//    }
-//    const res = await fetch(`${apiDomain}/posts`, {cache: "no-store"}); // server component fetch req needs the full url http://localhost:3000/api
+async function fetchPosts() {
+try {
+   if (!apiDomain) {
+     return [];
+   }
+   const res = await fetch(`${apiDomain}/posts`, {cache: "no-store"}); // server component fetch req needs the full url http://localhost:3000/api
 
-//    if (!res.ok) {
-//      throw new Error("Failed to fetch data!");
-//    }
+   if (!res.ok) {
+     throw new Error("Failed to fetch data!");
+   }
 
-//    const data = await res.json();
+   const data = await res.json();
 
-//    return data;
-// } catch (error) {
-//   console.log(error)
-// }
+   return data;
+} catch (error) {
+  console.log(error)
+}
  
-// }
+}
 
 async function getPostsByUserId(userId) {
   try {
@@ -81,6 +81,7 @@ async function getUserInfo(id) {
 };
 
 export {
+  fetchPosts,
   getPostsByUserId,
   getSinglepostById,
   getUserInfo

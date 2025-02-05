@@ -109,7 +109,7 @@ export const GET = async (request) => {
         });
         comment.likedByUser = !!liked; // Add `likedByUser` boolean. Double exclamation mark is true in this case. !!{} -> true
       }
-      console.log("Posts:", JSON.stringify(posts[0], null, 2));
+      // console.log("Posts:", JSON.stringify(posts[0], null, 2));
     }
 
     return new Response(JSON.stringify(posts), { status: 200 });
