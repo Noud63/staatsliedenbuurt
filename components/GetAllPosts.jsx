@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const GetAllPosts = () => {
+const GetAllPosts = ({initialData}) => {
 
   const { data, error, isLoading } = useSWR("/api/posts", fetcher, {
     fallbackData: initialData, // Use server-fetched data first
