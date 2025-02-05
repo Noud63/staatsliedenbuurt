@@ -13,7 +13,7 @@ export const POST = async (request, res) => {
     const client = new Emailvalidation(
       process.env.EMAIL_VALIDATION_API_KEY,
     );
-    const emailResponse = await client.info(email, { catch_all: 0 });
+    const emailResponse = await client.info(email, { catch_all: 1 });
 
     // Handle undeliverable emails
     if (emailResponse.state === "undeliverable") {

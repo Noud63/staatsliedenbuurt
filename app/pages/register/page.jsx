@@ -20,15 +20,15 @@ const RegisterPage = () => {
 
   const validateEmailClientSide = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    return regex.test(email.trim());
   };
 
-  useEffect(() => {
-    if (email != "" && !validateEmailClientSide(email)) {
+  const handleBlur = () => {
+    if (email && !validateEmailClientSide(email)) {
       alert("Not a valid email address!");
       setEmail("");
     }
-  }, [email]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +57,11 @@ const RegisterPage = () => {
           setSuccess(false);
           router.push("/pages/login");
         }, 5000);
-      } else if (res.status === 409 || res.status === 400 || res.status === 550) {
+      } else if (
+        res.status === 409 ||
+        res.status === 400 ||
+        res.status === 550
+      ) {
         const dataObj = await res.json();
         console.log(dataObj.message);
         setMessage(dataObj.message);
@@ -119,6 +123,7 @@ const RegisterPage = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onBlur={handleBlur}
             />
           </div>
           <div className="mb-4">

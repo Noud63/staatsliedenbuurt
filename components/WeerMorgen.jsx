@@ -46,7 +46,7 @@ const now = new Date();
       </div>
 
       <div className="mt-10 flex flex-row items-center justify-center">
-        <span className="bg-gradient-to-b from-yellow-600 to-yellow-700 bg-clip-text text-6xl font-semibold text-transparent [text-shadow:_0_18px_7px_rgb(161_98_7_/_70%)] max-lg:to-yellow-900">
+        <span className="bg-gradient-to-b from-yellow-600 to-yellow-800 bg-clip-text text-6xl font-semibold text-transparent [text-shadow:_0_18px_7px_rgb(161_98_7_/_70%)] max-lg:to-yellow-900">
           {" "}
           {Math.round(`${data2.temp}`)}
           {`\xB0C`}

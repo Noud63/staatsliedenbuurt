@@ -46,7 +46,7 @@ const WeatherreportPage = () => {
         <div className="flex items-center justify-between rounded-lg bg-white px-4 py-2 text-xl font-semibold text-yellow-900 max-xsm:text-xl">
           <span>Het weer actueel:</span>
           <span className="flex items-end pt-2 text-base font-normal">
-            {today}
+            <span className="text-lg font-semibold">{today}</span>
           </span>
         </div>
 
@@ -57,7 +57,9 @@ const WeatherreportPage = () => {
         <div className="flex items-center justify-between rounded-lg bg-white px-4 py-2 text-xl font-semibold text-yellow-900 max-xsm:text-xl">
           <span>Het weer voor morgen:</span>
           <span className="flex items-end pt-2 text-base font-normal">
-            {date.toLocaleDateString("nl-NL")}
+            <span className="text-lg font-semibold">
+              {date.toLocaleDateString("nl-NL")}
+            </span>
           </span>
         </div>
 
