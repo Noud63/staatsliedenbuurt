@@ -46,7 +46,7 @@ const Comment = ({ com, postId }) => {
           });
 
           if (!res.ok) throw new Error("Failed to update like");
-          mutate("/api/posts");
+        
         } catch (error) {
           console.error(error);
           return currentData; // Rollback on failure
@@ -56,7 +56,7 @@ const Comment = ({ com, postId }) => {
       },
       false,
     ); // `false` means it won't revalidate immediately
-  // mutate("/api/posts");
+  mutate("/api/posts");
   };
 
   const deleteComment = async (commentId) => {
