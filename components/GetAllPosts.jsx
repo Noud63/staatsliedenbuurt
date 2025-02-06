@@ -10,7 +10,7 @@ const GetAllPosts = ({initialData}) => {
 
   const { data, error, isLoading } = useSWR("/api/posts", fetcher, {
     fallbackData: initialData, // Use preloaded data first
-    revalidateOnMount: false, // Don't fetch again on mount (we already have fresh data)
+    revalidateOnMount: false, // Don't fetch again on mount, already have fresh data
     revalidateOnFocus: true, // Refetch when user revisits tab (great for UX)
     revalidateOnReconnect: true, // Refetch when internet reconnects
   });

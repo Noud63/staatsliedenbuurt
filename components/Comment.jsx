@@ -11,9 +11,9 @@ const Comment = ({ com, postId }) => {
   
   const { data: session } = useSession();
 
-  useEffect(() => {
-  mutate("/api/posts");  // Force refresh of comments when app is opened
-}, []);
+//   useEffect(() => {
+//   mutate("/api/posts");  // Force refresh of comments when app is opened
+// }, []);
 
   const toggleLike = async (commentId) => {
     // Optimistically update the UI
