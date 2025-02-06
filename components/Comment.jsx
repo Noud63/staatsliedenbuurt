@@ -17,26 +17,30 @@ const Comment = ({ com, postId }) => {
 
   const toggleLike = async (commentId) => {
     // Optimistically update the UI
-    mutate(
-      `/api/posts`,
-      async (currentData) => {
-        // Find the post that contains the comment
-        const updatedPosts = currentData.map((post) => {
-          return {
-            ...post,
-            comments: post.comments.map((comment) => {
-              if (comment._id === commentId) {
-                return {
-                  ...comment,
-                  likesCount:
-                    comment.likesCount + (comment.likedByUser ? -1 : 1), // if likedbyuser is true -> comment.likesCount - 1 else comment.likesCount + 1
-                  likedByUser: !comment.likedByUser, // Toggle like state true/false
-                };
-              }
-              return comment;
-            }),
-          };
-        });
+     mutate(
+    "/api/posts",
+    async (currentData) => {
+      if (!currentData) return;
+
+      // Find the post and comment being liked/unliked
+      const updatedPosts = currentData.map((post) => ({
+        ...post,
+        comments: post.comments.map((comment) => {
+          if (comment._id === commentId) {
+            return {
+              ...comment,
+              likedByUser: !comment.likedByUser, // Toggle like status
+              likesCount: comment.likesCount + (comment.likedByUser ? -1 : 1), // Adjust like count
+            };
+          }
+          return comment;
+        }),
+      }));
+
+      return updatedPosts; // Return the updated posts array
+    },
+    false // Don't re-fetch from API yet (optimistic update)
+  );
 
         try {
           const res = await fetch(`/api/comments/${commentId}/like`, {
@@ -46,17 +50,13 @@ const Comment = ({ com, postId }) => {
           });
 
           if (!res.ok) throw new Error("Failed to update like");
-        
+         mutate("/api/posts");
         } catch (error) {
           console.error(error);
-          return currentData; // Rollback on failure
+           mutate("/api/posts");
         }
-
-        return updatedPosts; // Return updated UI state
-      },
-      false,
-    ); // `false` means it won't revalidate immediately
-  mutate("/api/posts");
+    
+  
   };
 
   const deleteComment = async (commentId) => {
