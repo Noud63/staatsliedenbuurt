@@ -1,12 +1,12 @@
 import React from 'react'
-import { InwonersAantallen } from "@/components/infographics/InwonersChart";
-import { Inkomensverschillen } from "@/components/infographics/InkomensChart";
-import { EenpersoonsHuishoudens } from "@/components/infographics/EenpersoonshuishoudensChart";
+import { InwonersAantallen } from "@/components/hoofdmenu/infographics/InwonersChart";
+import { Inkomensverschillen } from "@/components/hoofdmenu/infographics/InkomensChart";
+import { EenpersoonsHuishoudens } from "@/components/hoofdmenu/infographics/EenpersoonshuishoudensChart";
+import { Leeftijdscategorieen } from "@/components/hoofdmenu/infographics/LeeftijdscategorieenChart";
 
 const AllCharts = () => {
   return (
     <div className="grid grid-cols-3 gap-4 max-xl:grid-cols-2 max-md:grid-cols-1">
-
       <div className="flex flex-col justify-between">
         <div>
           <div className="mt-8 rounded-md bg-yellow-700 py-2 pl-4 text-lg font-semibold text-white shadow">
@@ -16,7 +16,6 @@ const AllCharts = () => {
           <div className="text-md mt-4 px-4">
             De afgelopen 10 jaar is het inwonersaantal in de Staatsliedenbuurt
             met 250 gestegen.
-            
           </div>
         </div>
         <InwonersAantallen />
@@ -34,7 +33,7 @@ const AllCharts = () => {
             Een significante stijging van maar liefst 99%.
           </div>
         </div>
-            <Inkomensverschillen />
+        <Inkomensverschillen />
       </div>
 
       <div className="flex flex-col justify-between">
@@ -49,9 +48,21 @@ const AllCharts = () => {
             huishoudens.
           </div>
         </div>
-         <EenpersoonsHuishoudens />
+        <EenpersoonsHuishoudens />
       </div>
 
+      <div className="flex flex-col justify-between">
+        <div>
+          <div className="mt-8 rounded-md bg-yellow-700 py-2 pl-4 text-lg font-semibold text-white shadow">
+            <span className="font-semibold">Leeftijdscategorieën</span>
+          </div>
+          <div className="text-md mt-4 flex justify-start px-4">
+            Leeftijdscategorieën ingedeeld van 0-18, 18-64, 65-79 en 80 jaar en ouder.
+            Weergegeven in absolute aantallen op de totale bevolking van de wijk.
+          </div>
+        </div>
+        <Leeftijdscategorieen />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import AllCharts from "@/components/AllCharts";
+import AllCharts from "@/components/hoofdmenu/AllCharts";
 
 const DemografiePage = () => {
   return (
