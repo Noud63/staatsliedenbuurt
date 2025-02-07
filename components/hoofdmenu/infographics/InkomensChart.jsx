@@ -66,12 +66,16 @@ export function Inkomensverschillen() {
         <CardTitle>Gemiddeld besteedbaar inkomen</CardTitle>
         <CardDescription>2002 - 2021</CardDescription>
       </CardHeader>
-      <CardContent className="pb-0 pl-0 pr-6">
+      <CardContent className="-ml-8 pb-0">
         <ChartContainer config={chartConfig}>
           <div className="h-full w-full">
             <ResponsiveContainer>
               <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="lightgray"
+                  vertical={false}
+                />
                 <XAxis dataKey="jaar" tickLine={false} axisLine={false} />
                 <YAxis
                   tickLine={false}

@@ -1,6 +1,12 @@
 "use client"
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  ResponsiveContainer,
+} from "recharts";
 
 import {
   Card,
@@ -68,44 +74,49 @@ export function Leeftijdscategorieen() {
         <CardTitle>Leeftijdscategorieën</CardTitle>
         <CardDescription>2005 - 2024</CardDescription>
       </CardHeader>
-      <CardContent className="pb-0 pl-0 pr-6">
+      <CardContent className="px-2 pb-0">
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="jaar"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(2)}
-            />
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            <ChartLegend content={<ChartLegendContent />} />
-            <Bar
-              dataKey="0-18"
-              stackId="a"
-              fill="#713f12"
-              radius={[0, 0, 0, 0]}
-            />
-            <Bar
-              dataKey="18-64"
-              stackId="a"
-              fill="#a16207"
-              radius={[0, 0, 0, 0]}
-            />
-            <Bar
-              dataKey="65-79"
-              stackId="a"
-              fill="#ca8a04"
-              radius={[0, 0, 0, 0]}
-            />
-            <Bar
-              dataKey="80+"
-              stackId="a"
-              fill="orange"
-              radius={[0, 0, 0, 0]}
-            />
-          </BarChart>
+          
+              <BarChart accessibilityLayer data={chartData}>
+                <CartesianGrid
+                  stroke="lightgray"
+                  strokeDasharray="3 3"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="jaar"
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => value.slice(2)}
+                />
+                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                <ChartLegend content={<ChartLegendContent />} className="p-1" />
+                <Bar
+                  dataKey="0-18"
+                  stackId="a"
+                  fill="#713f12"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="18-64"
+                  stackId="a"
+                  fill="#a16207"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="65-79"
+                  stackId="a"
+                  fill="#ca8a04"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="80+"
+                  stackId="a"
+                  fill="orange"
+                  radius={[0, 0, 0, 0]}
+                />
+              </BarChart>
+           
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex items-start border-t border-black pl-0 pt-4 text-sm">

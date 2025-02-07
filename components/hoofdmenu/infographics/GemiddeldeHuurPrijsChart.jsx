@@ -1,48 +1,62 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts"
+import { useEffect, useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
-import { Card, CardFooter, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer } from "@/components/ui/chart"
+import {
+  Card,
+  CardFooter,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ChartContainer } from "@/components/ui/chart";
 
 const chartData = [
-  { jaar: "2014", inwoners: 12754 },
-  { jaar: "2015", inwoners: 13056 },
-  { jaar: "2016", inwoners: 13187 },
-  { jaar: "2017", inwoners: 13268 },
-  { jaar: "2018", inwoners: 13315 },
-  { jaar: "2019", inwoners: 13162 },
-  { jaar: "2020", inwoners: 13098 },
-  { jaar: "2021", inwoners: 12903 },
-  { jaar: "2022", inwoners: 12909 },
-  { jaar: "2023", inwoners: 12970 },
-  { jaar: "2024", inwoners: 13004 },
-]
+  { jaar: "2005", huurprijs: 291 },
+  { jaar: "2007", huurprijs: 309 },
+  { jaar: "2009", huurprijs: 365 },
+  { jaar: "2011", huurprijs: 412 },
+  { jaar: "2013", huurprijs: 437 },
+  { jaar: "2015", huurprijs: 539 },
+  { jaar: "2017", huurprijs: 599 },
+  { jaar: "2019", huurprijs: 622 },
+  { jaar: "2021", huurprijs: 809 },
+  { jaar: "2023", huurprijs: 772 },
+];
 
 const chartConfig = {
-  inwoners: {
-    label: "Inwoners",
+  huurprijs: {
+    label: "huurprijs",
     color: "#854d0e",
   },
-}
+};
 
-export function InwonersAantallen() {
-  const [isMounted, setIsMounted] = useState(false)
+export function GemiddeldeHuurPrijs() {
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
   if (!isMounted) {
-    return null
+    return null;
   }
 
   return (
-    <Card className="mt-6 max-w-full px-4">
+    <Card className="mt-4 max-w-full px-4">
       <CardHeader className="mb-4 w-full border-b border-gray-400 px-0 py-4 text-lg text-yellow-900">
-        <CardTitle>Inwoners aantallen</CardTitle>
-        <CardDescription>2014 - 2024</CardDescription>
+        <CardTitle>Gemiddelde huurprijs</CardTitle>
+        <CardDescription>2005 - 2023</CardDescription>
       </CardHeader>
       <CardContent className="-ml-8 pb-0">
         <ChartContainer config={chartConfig}>
@@ -68,7 +82,11 @@ export function InwonersAantallen() {
                   }}
                   cursor={{ fill: "rgba(0, 0, 0, 0.1)" }}
                 />
-                <Bar dataKey="inwoners" fill="#854d0e" radius={[0, 0, 0, 0]} />
+                <Bar
+                  dataKey="huurprijs"
+                  fill="#854d0e"
+                  radius={[0, 0, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -82,4 +100,3 @@ export function InwonersAantallen() {
     </Card>
   );
 }
-
