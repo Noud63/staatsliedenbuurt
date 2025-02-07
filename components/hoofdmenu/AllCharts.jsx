@@ -1,9 +1,10 @@
 import React from 'react'
-import { InwonersAantallen } from "@/components/hoofdmenu/infographics/InwonersChart";
-import { Inkomensverschillen } from "@/components/hoofdmenu/infographics/InkomensChart";
-import { EenpersoonsHuishoudens } from "@/components/hoofdmenu/infographics/EenpersoonshuishoudensChart";
-import { Leeftijdscategorieen } from "@/components/hoofdmenu/infographics/LeeftijdscategorieenChart";
-import { GemiddeldeHuurPrijs } from "@/components/hoofdmenu/infographics/GemiddeldeHuurPrijsChart";
+import { InwonersAantallen } from "./infographics/InwonersChart";
+import { Inkomensverschillen } from "./infographics/InkomensChart";
+import { EenpersoonsHuishoudens } from "./infographics/EenpersoonshuishoudensChart";
+import { Leeftijdscategorieen } from "./infographics/LeeftijdscategorieenChart";
+import { GemiddeldeHuurPrijs } from "./infographics/GemiddeldeHuurPrijsChart";
+import { Woonoppervlak } from './infographics/WoonoppervlakChart';
 
 const AllCharts = () => {
   return (
@@ -72,11 +73,25 @@ const AllCharts = () => {
             <span className="font-semibold">Gemiddelde huurprijs</span>
           </div>
           <div className="text-md mt-4 px-4">
-            De gemiddelde huurprijs van een woning in de Staatsliedenbuurt<br />
-            De gemiddelde huurprijs is de afgelopen 10 jaar met gemiddeld €350 gestegen.
+            De gemiddelde huurprijs van een woning in de Staatsliedenbuurt
+            <br />
+            De gemiddelde huurprijs is de afgelopen 10 jaar met ca. €350
+            gestegen.
           </div>
         </div>
         <GemiddeldeHuurPrijs />
+      </div>
+
+      <div className="flex flex-col justify-between">
+        <div>
+          <div className="mt-8 rounded-md bg-yellow-700 py-2 pl-4 text-lg font-semibold text-white shadow">
+            <span className="font-semibold">Verdeling woonoppervlak</span>
+          </div> 
+          <div className="text-md mt-4 px-4">
+            Aantal woningen per woonoppervlak in m2.
+           </div>
+        </div>
+        <Woonoppervlak />
       </div>
     </div>
   );
