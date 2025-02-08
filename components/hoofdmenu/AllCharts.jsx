@@ -88,7 +88,7 @@ const AllCharts = () => {
             <span className="font-semibold">Verdeling woonoppervlak</span>
           </div> 
           <div className="text-md mt-4 px-4">
-            Aantal woningen per woonoppervlak in m2.
+            Aantal woningen per woonoppervlak van 0-40 m², 40-60 m², 60-80 m² en 100+ m².
            </div>
         </div>
         <Woonoppervlak />

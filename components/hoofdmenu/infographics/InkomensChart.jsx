@@ -63,7 +63,7 @@ export function Inkomensverschillen() {
   return (
     <Card className="mt-4 max-w-full px-4">
       <CardHeader className="mb-4 w-full border-b border-gray-400 px-0 py-4 text-lg text-yellow-900">
-        <CardTitle>Gemiddeld besteedbaar inkomen</CardTitle>
+        <CardTitle>Gemiddeld besteedbaar inkomen in &euro;</CardTitle>
         <CardDescription>2002 - 2021</CardDescription>
       </CardHeader>
       <CardContent className="-ml-8 pb-0">

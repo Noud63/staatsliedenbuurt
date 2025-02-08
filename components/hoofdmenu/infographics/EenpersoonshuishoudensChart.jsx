@@ -60,7 +60,7 @@ export function EenpersoonsHuishoudens() {
   return (
     <Card className="mt-4 max-w-full px-4">
       <CardHeader className="mb-4 w-full border-b border-gray-400 px-0 py-4 text-lg text-yellow-900">
-        <CardTitle>Eenpersoonshuishoudens</CardTitle>
+        <CardTitle>Eenpersoonshuishoudens in %</CardTitle>
         <CardDescription>2010 - 2024</CardDescription>
       </CardHeader>
       <CardContent className="-ml-8 pb-0">
