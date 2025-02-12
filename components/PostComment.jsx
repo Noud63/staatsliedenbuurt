@@ -4,6 +4,7 @@ import PostCommentForm from "./PostCommentForm";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Comment from "./Comment";
+import CommentsOnComment from "./CommentsOnComment";
 
 const PostComment = ({ post, comments }) => {
 
@@ -12,16 +13,25 @@ const PostComment = ({ post, comments }) => {
   );
 
   const { data: session } = useSession();
+  const userId = session?.user?.id;
   const profilePic = session?.user?.avatar;
 
   return (
     <div className="flex w-full flex-col items-center gap-2">
       <div className="flex w-full flex-col">
-        <div className="mb-2 pb-4 pl-4 text-lg font-semibold text-gray-600">
+        <div className="mb-2 pb-2 pl-4 text-lg font-semibold text-gray-600">
           Reacties:
         </div>
         {sortedComments.map((com, index) => (
-          <Comment key={index} com={com} postId={post._id}/>
+          <div className="mb-4" key={index}>
+            <Comment com={com} postId={post._id} />
+            <CommentsOnComment
+              com={com}
+              postId={post._id}
+              profilePic={profilePic}
+              userId={userId}
+            />
+          </div>
         ))}
       </div>
 
